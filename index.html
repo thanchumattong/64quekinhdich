@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bảng dữ liệu 64 Quẻ Kinh Dịch – Hướng Độ</title>
+<style>
+:root {
+  --red:#a8152e; --red-dark:#7f0d23; --red-soft:#fff1f3;
+  --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb;
+  --panel:#fff; --bg:#f7f8fa; --gold:#b7791f;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{height:64px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:30}
+.brand{display:flex;gap:12px;align-items:center;font-weight:800;color:var(--red)}
+.brand-mark{width:34px;height:34px;border-radius:50%;background:var(--red-soft);display:grid;place-items:center;font-size:22px}
+.header-note{font-size:13px;color:var(--muted)}
+.app{display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:18px;padding:22px}
+.main-card,.detail-card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 4px 18px rgba(0,0,0,.04)}
+.main-card{padding:18px;min-width:0}
+h1{font-size:28px;margin:0 0 6px}
+.subtitle{color:var(--muted);margin-bottom:18px}
+.toolbar{display:grid;grid-template-columns:minmax(210px,1.1fr) repeat(6,minmax(128px,.6fr));gap:9px;margin-bottom:12px}
+.degree-box{position:relative}
+.degree-box input{padding-right:34px}
+.degree-box span{position:absolute;right:12px;top:10px;color:var(--muted);font-weight:700}
+input,select{width:100%;height:42px;border:1px solid #d9dde4;border-radius:10px;padding:0 12px;background:#fff;color:var(--ink)}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px;max-height:calc(100vh - 250px)}
+table{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%;font-size:13px}
+th,td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:9px 8px;text-align:center;white-space:nowrap;background:#fff}
+thead th{position:sticky;background:#fafafa;z-index:6;font-weight:700}
+thead tr:first-child th{top:0}
+thead tr:nth-child(2) th{top:39px}
+th.group{background:#f4f5f7}
+td.name{text-align:left;font-weight:700;min-width:180px}
+td.note{text-align:left;max-width:240px;white-space:normal}
+td.symbol{font-size:26px;color:var(--red);font-family:"Segoe UI Symbol","Noto Sans Symbols 2",sans-serif}
+.badge{display:inline-flex;min-width:34px;height:28px;padding:0 10px;border-radius:999px;align-items:center;justify-content:center;font-weight:800}
+.badge.element{background:#fee2e2;color:#b91c1c}
+.badge.period{background:#fef3c7;color:#92400e}
+.badge.dir{background:#ecfdf5;color:#047857}
+.badge.mtn{background:#eff6ff;color:#1d4ed8}
+.pos{display:inline-flex;width:28px;height:28px;border-radius:8px;align-items:center;justify-content:center;background:var(--red-soft);color:var(--red);font-weight:800}
+tbody tr{cursor:pointer}
+tbody tr:hover td{background:#fff8f9}
+tbody tr.active td{background:#fff0f2}
+.detail-card{position:sticky;top:86px;height:calc(100vh - 108px);overflow:auto;padding:18px}
+.detail-kicker{color:var(--red);font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px}
+.detail-title{font-size:24px;font-weight:850;margin:0 0 4px}
+.detail-sub{font-size:13px;color:var(--muted);margin-bottom:16px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0 12px}
+.metric{background:#f7f7f8;border-radius:12px;padding:10px;text-align:center}
+.metric .label{font-size:11px;color:var(--muted);margin-bottom:4px}
+.metric .value{font-weight:850;font-size:20px;color:var(--red)}
+.location-card{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.location-card>div{border:1px solid var(--line);border-radius:12px;padding:10px}
+.location-card .wide{grid-column:1/-1}
+.location-label{font-size:11px;color:var(--muted);margin-bottom:3px}
+.location-value{font-weight:800}
+.trigrams{display:flex;gap:12px;margin-bottom:18px}
+.trigram-box{flex:1;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+.trigram-symbol{font-size:38px;color:var(--red);line-height:1.1}
+.trigram-label{font-size:11px;color:var(--muted);margin-top:4px}
+.hexagram{border-top:1px solid var(--line);padding-top:16px}
+.hex-row{display:grid;grid-template-columns:86px 1fr 84px;align-items:center;gap:10px;margin:8px 0}
+.relation,.branch{font-size:13px}
+.relation{text-align:right} .branch{text-align:left}
+.line-wrap{position:relative;height:24px;display:flex;align-items:center}
+.line-solid{height:10px;background:#bf5a54;width:100%;border-radius:2px}
+.line-broken{display:flex;width:100%;justify-content:space-between}
+.line-broken span{height:10px;background:#bf5a54;width:43%;border-radius:2px}
+.role{position:absolute;left:8px;top:2px;color:#fff;font-weight:800;font-size:11px}
+.footerbar{display:flex;justify-content:space-between;align-items:center;margin-top:12px;color:var(--muted);font-size:13px}
+.hint{font-size:12px;color:var(--muted);margin:4px 0 12px}
+@media(max-width:1300px){.toolbar{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:1100px){.app{grid-template-columns:1fr}.detail-card{position:relative;top:0;height:auto}}
+@media(max-width:700px){.app{padding:10px}.toolbar{grid-template-columns:1fr 1fr}header{padding:0 12px}h1{font-size:22px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="brand-mark">☯</div><div>PHONG THỦY TƯỜNG MINH</div></div>
+  <div class="header-note">Prototype 64 Quẻ · Hướng · Sơn · Độ</div>
+</header>
+
+<div class="app">
+<section class="main-card">
+  <h1>BẢNG DỮ LIỆU 64 QUẺ KINH DỊCH</h1>
+  <div class="subtitle">Đã bổ sung Phương Vị, Sơn và Khoảng Độ tự động từ bảng Xuan Kong Da Gua.</div>
+
+  <div class="toolbar">
+    <input id="q" placeholder="Tìm tên quẻ...">
+    <select id="direction"><option value="">Tất cả Phương Vị</option></select>
+    <select id="mountain"><option value="">Tất cả Sơn</option></select>
+    <div class="degree-box"><input id="degree" inputmode="decimal" placeholder="Tra theo độ"><span>°</span></div>
+    <select id="upper"><option value="">Tất cả Thượng Quái</option></select>
+    <select id="lower"><option value="">Tất cả Hạ Quái</option></select>
+    <select id="element"><option value="">Tất cả HKNH</option></select>
+    <select id="period"><option value="">Tất cả Quái Vận</option></select>
+  </div>
+  <div class="hint">Có thể kết hợp nhiều bộ lọc cùng lúc. Nếu nhập đúng một độ nằm trên ranh giới giữa hai quẻ, hệ thống sẽ hiển thị cả hai quẻ tiếp giáp.</div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th rowspan="2">STT</th><th rowspan="2">Tên quẻ</th>
+          <th rowspan="2">Thượng Quái</th><th rowspan="2">Hạ Quái</th>
+          <th rowspan="2">Phương Vị</th><th rowspan="2">Sơn</th><th rowspan="2">Khoảng Độ</th>
+          <th rowspan="2">Huyền Không<br>Ngũ Hành</th><th rowspan="2">Quái Vận</th>
+          <th rowspan="2">Thế</th><th rowspan="2">Ứng</th>
+          <th class="group" colspan="6">Lục Thân Theo Hào (từ trên xuống dưới)</th>
+          <th class="group" colspan="6">Địa Chi Theo Hào (từ trên xuống dưới)</th>
+          <th rowspan="2">Ghi chú</th>
+        </tr>
+        <tr>
+          <th>H6</th><th>H5</th><th>H4</th><th>H3</th><th>H2</th><th>H1</th>
+          <th>H6</th><th>H5</th><th>H4</th><th>H3</th><th>H2</th><th>H1</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <div class="footerbar"><span id="count"></span><span>Nhấp vào một hàng để xem chi tiết.</span></div>
+</section>
+
+<aside class="detail-card" id="detail">
+  <div style="color:var(--muted);padding:30px;text-align:center">Chọn một quẻ để xem chi tiết.</div>
+</aside>
+</div>
+
+<script>
+const DATA = [{"stt": 1, "name": "Càn Vi Thiên", "upper": "☰", "lower": "☰", "element": 9, "period": 1, "the": 6, "ung": 3, "lucThan": ["Phụ Mẫu", "Huynh Đệ", "Quan Quỷ", "Phụ Mẫu", "Thê Tài", "Tử Tôn"], "diaChi": ["Tuất", "Thân", "Ngọ ", "Thìn", "Dần", "Tý"], "note": "Dòng mẫu", "direction": "Nam", "mountain": "Ngọ", "deg_start": 174.375, "deg_end": 180.0, "deg_range": "174.375° – 180°"}, {"stt": 2, "name": "Thiên Trạch Lý", "upper": "☰", "lower": "☱", "element": 9, "period": 6, "the": 5, "ung": 2, "lucThan": ["Huynh Đệ", "Tử Tôn", "Phụ Mẫu", "Huynh Đệ", "Quan Quỷ", "Phụ Mẫu"], "diaChi": ["Tuất", "Thân", "Ngọ ", "Sửu ", "Mão", "Tỵ"], "note": "", "direction": "Đông Nam", "mountain": "Tốn", "deg_start": 129.375, "deg_end": 135.0, "deg_range": "129.375° – 135°"}, {"stt": 3, "name": "Thiên Hoả Đồng Nhân", "upper": "☰", "lower": "☲", "element": 9, "period": 7, "the": 3, "ung": 6, "lucThan": ["Tử Tôn", "Thê Tài", "Huynh Đệ", "Quan Quỷ", "Tử Tôn", "Phụ Mẫu"], "diaChi": ["Tuất", "Thân", "Ngọ ", "Hợi ", "Sửu", "Mão"], "note": "", "direction": "Đông", "mountain": "Mão", "deg_start": 84.375, "deg_end": 90.0, "deg_range": "84.375° – 90°"}, {"stt": 4, "name": "Thiên Lôi Vô Vọng", "upper": "☰", "lower": "☳", "element": 9, "period": 2, "the": 4, "ung": 1, "lucThan": ["Thê Tài", "Quan Quỷ", "Tử Tôn", "Thê Tài", "Huynh Đệ", "Phụ Mẫu"], "diaChi": ["Tuất", "Thân", "Ngọ ", "Thìn", "Dần", "Tý"], "note": "", "direction": "Đông Bắc", "mountain": "Cấn", "deg_start": 39.375, "deg_end": 45.0, "deg_range": "39.375° – 45°"}, {"stt": 5, "name": "Thiên Phong Cấu", "upper": "☰", "lower": "☴", "element": 9, "period": 8, "the": 1, "ung": 4, "lucThan": ["Phụ Mẫu", "Huynh Đệ", "Quan Quỷ", "Huynh Đệ", "Tử Tôn", "Phụ Mẫu"], "diaChi": ["Tuất", "Thân", "Ngọ ", "Dậu", "Hợi", "Sửu"], "note": "", "direction": "Tây Nam", "mountain": "Khôn", "deg_start": 219.375, "deg_end": 225.0, "deg_range": "219.375° – 225°"}, {"stt": 6, "name": "Thiên Thuỷ Tụng", "upper": "☰", "lower": "☵", "element": 9, "period": 3, "the": 4, "ung": 1, "lucThan": ["Tử Tôn", "Thê Tài", "Huynh Đệ", "Huynh Đệ", "Tử Tôn", "Phụ Mẫu"], "diaChi": ["Tuất", "Thân", "Ngọ ", "Ngọ", "Thìn", "Dần"], "note": "", "direction": "Tây", "mountain": "Dậu", "deg_start": 264.375, "deg_end": 270.0, "deg_range": "264.375° – 270°"}, {"stt": 7, "name": "Thiên Sơn Độn", "upper": "☰", "lower": "☶", "element": 9, "period": 4, "the": 2, "ung": 5, "lucThan": ["Phụ Mẫu", "Huynh Đệ", "Quan Quỷ", "Huynh Đệ", "Quan Quỷ", "Phụ Mẫu"], "diaChi": ["Tuất", "Thân", "Ngọ ", "Thân", "Ngọ", "Thìn"], "note": "", "direction": "Tây Bắc", "mountain": "Càn", "deg_start": 309.375, "deg_end": 315.0, "deg_range": "309.375° – 315°"}, {"stt": 8, "name": "Thiên Địa Bỉ", "upper": "☰", "lower": "☷", "element": 9, "period": 9, "the": 3, "ung": 6, "lucThan": ["Phụ Mẫu", "Huynh Đệ", "Quan Quỷ", "Thê Tài", "Quan Quỷ", "Phụ Mẫu"], "diaChi": ["Tuất", "Thân", "Ngọ ", "Mão", "Tỵ", "Mùi"], "note": "", "direction": "Bắc", "mountain": "Tý", "deg_start": 354.375, "deg_end": 360.0, "deg_range": "354.375° – 360°"}, {"stt": 9, "name": "Trạch Thiên Quải", "upper": "☱", "lower": "☰", "element": 4, "period": 6, "the": 5, "ung": 2, "lucThan": ["Huynh Đệ", "Tử Tôn", "Thê Tài", "Huynh Đệ", "Quan Quỷ", "Thê Tài"], "diaChi": ["Mùi", "Dậu", "Hợi", "Thìn", "Dần", "Tý"], "note": "", "direction": "Nam", "mountain": "Bính / Ngọ", "deg_start": 168.75, "deg_end": 174.375, "deg_range": "168.75° – 174.375°"}, {"stt": 10, "name": "Đoài Vi Trạch", "upper": "☱", "lower": "☱", "element": 4, "period": 1, "the": 6, "ung": 3, "lucThan": ["Phụ Mẫu", "Huynh Đệ", "Tử Tôn", "Phụ Mẫu", "Thê Tài", "Quan Quỷ"], "diaChi": ["Mùi", "Dậu", "Hợi", "Sửu ", "Mão", "Tỵ"], "note": "", "direction": "Đông Nam", "mountain": "Thìn / Tốn", "deg_start": 123.75, "deg_end": 129.375, "deg_range": "123.75° – 129.375°"}, {"stt": 11, "name": "Trạch Hoả Cách", "upper": "☱", "lower": "☲", "element": 4, "period": 2, "the": 4, "ung": 1, "lucThan": ["Quan Quỷ", "Phụ Mẫu", "Huynh Đệ", "Huynh Đệ", "Quan Quỷ", "Tử Tôn"], "diaChi": ["Mùi", "Dậu", "Hợi", "Hợi ", "Sửu", "Mão"], "note": "", "direction": "Đông", "mountain": "Giáp / Mão", "deg_start": 78.75, "deg_end": 84.375, "deg_range": "78.75° – 84.375°"}, {"stt": 12, "name": "Trạch Lôi Tuỳ", "upper": "☱", "lower": "☳", "element": 4, "period": 7, "the": 3, "ung": 6, "lucThan": ["Thê Tài", "Quan Quỷ", "Phụ Mẫu", "Thê Tài", "Huynh Đệ", "Phụ Mẫu"], "diaChi": ["Mùi", "Dậu", "Hợi", "Thìn", "Dần", "Tý"], "note": "", "direction": "Đông Bắc", "mountain": "Sửu / Cấn", "deg_start": 33.75, "deg_end": 39.375, "deg_range": "33.75° – 39.375°"}, {"stt": 13, "name": "Trạch Phong Đại Quá", "upper": "☱", "lower": "☴", "element": 4, "period": 3, "the": 4, "ung": 1, "lucThan": ["Thê Tài", "Quan Quỷ", "Phụ Mẫu", "Quan Quỷ", "Phụ Mẫu", "Thê Tài"], "diaChi": ["Mùi", "Dậu", "Hợi", "Dậu", "Hợi", "Sửu"], "note": "", "direction": "Tây Nam", "mountain": "Mùi / Khôn", "deg_start": 213.75, "deg_end": 219.375, "deg_range": "213.75° – 219.375°"}, {"stt": 14, "name": "Trạch Thuỷ Khốn", "upper": "☱", "lower": "☵", "element": 4, "period": 8, "the": 1, "ung": 4, "lucThan": ["Phụ Mẫu", "Huynh Đệ", "Tử Tôn", "Quan Quỷ", "Phụ Mẫu", "Thê Tài"], "diaChi": ["Mùi", "Dậu", "Hợi", "Ngọ", "Thìn", "Dần"], "note": "", "direction": "Tây", "mountain": "Canh / Dậu", "deg_start": 258.75, "deg_end": 264.375, "deg_range": "258.75° – 264.375°"}, {"stt": 15, "name": "Trạch Sơn Hàm", "upper": "☱", "lower": "☶", "element": 4, "period": 9, "the": 3, "ung": 6, "lucThan": ["Phụ Mẫu", "Huynh Đệ", "Tử Tôn", "Huynh Đệ", "Quan Quỷ", "Phụ Mẫu"], "diaChi": ["Mùi", "Dậu", "Hợi", "Thân", "Ngọ", "Thìn"], "note": "", "direction": "Tây Bắc", "mountain": "Tuất / Càn", "deg_start": 303.75, "deg_end": 309.375, "deg_range": "303.75° – 309.375°"}, {"stt": 16, "name": "Trạch Địa Tuỵ", "upper": "☱", "lower": "☷", "element": 4, "period": 4, "the": 2, "ung": 5, "lucThan": ["Phụ Mẫu", "Huynh Đệ", "Tử Tôn", "Thê Tài", "Quan Quỷ", "Phụ Mẫu"], "diaChi": ["Mùi", "Dậu", "Hợi", "Mão", "Tỵ", "Mùi"], "note": "", "direction": "Bắc", "mountain": "Nhâm / Tý", "deg_start": 348.75, "deg_end": 354.375, "deg_range": "348.75° – 354.375°"}, {"stt": 17, "name": "Hoả Thiên Đại Hữu", "upper": "☲", "lower": "☰", "element": 3, "period": 7, "the": 3, "ung": 6, "lucThan": ["Quan Quỷ", "Phụ Mẫu", "Huynh Đệ", "Phụ Mẫu", "Thê Tài", "Tử Tôn"], "diaChi": ["Tỵ", "Mùi", "Dậu", "Thìn", "Dần", "Tý"], "note": "", "direction": "Nam", "mountain": "Bính", "deg_start": 163.125, "deg_end": 168.75, "deg_range": "163.125° – 168.75°"}, {"stt": 18, "name": "Hoả Trạch Khuê", "upper": "☲", "lower": "☱", "element": 3, "period": 2, "the": 4, "ung": 1, "lucThan": ["Phụ Mẫu", "Huynh Đệ", "Tử Tôn", "Huynh Đệ", "Quan Quỷ", "Phụ Mẫu"], "diaChi": ["Tỵ", "Mùi", "Dậu", "Sửu ", "Mão", "Tỵ"], "note": "", "direction": "Đông Nam", "mountain": "Thìn", "deg_start": 118.125, "deg_end": 123.75, "deg_range": "118.125° – 123.75°"}, {"stt": 19, "name": "Ly Vi hoả", "upper": "☲", "lower": "☲", "element": 3, "period": 1, "the": 6, "ung": 3, "lucThan": ["Huynh Đệ", "Tử Tôn", "Thê Tài", "Quan Quỷ", "Tử Tôn", "Phụ Mẫu"], "diaChi": ["Tỵ", "Mùi", "Dậu", "Hợi ", "Sửu", "Mão"], "note": "", "direction": "Đông", "mountain": "Giáp", "deg_start": 73.125, "deg_end": 78.75, "deg_range": "73.125° – 78.75°"}, {"stt": 20, "name": "Hoả Lôi Phệ Hạp", "upper": "☲", "lower": "☳", "element": 3, "period": 6, "the": 5, "ung": 2, "lucThan": ["Tử Tôn", "Thê Tài", "Quan Quỷ", "Thê Tài", "Huynh Đệ", "Phụ Mẫu"], "diaChi": ["Tỵ", "Mùi", "Dậu", "Thìn", "Dần", "Tý"], "note": "", "direction": "Đông Bắc", "mountain": "Sửu", "deg_start": 28.125, "deg_end": 33.75, "deg_range": "28.125° – 33.75°"}, {"stt": 21, "name": "Hoả Phong Đỉnh", "upper": "☲", "lower": "☴", "element": 3, "period": 4, "the": 2, "ung": 5, "lucThan": ["Huynh Đệ", "Tử Tôn", "Thê Tài", "Thê Tài", "Quan Quỷ", "Tử Tôn"], "diaChi": ["Tỵ", "Mùi", "Dậu", "Dậu", "Hợi", "Sửu"], "note": "", "direction": "Tây Nam", "mountain": "Mùi", "deg_start": 208.125, "deg_end": 213.75, "deg_range": "208.125° – 213.75°"}, {"stt": 22, "name": "Hoả Thuỷ Vị Tế", "upper": "☲", "lower": "☵", "element": 3, "period": 9, "the": 3, "ung": 6, "lucThan": ["Huynh Đệ", "Tử Tôn", "Thê Tài", "Huynh Đệ", "Tử Tôn", "Phụ Mẫu"], "diaChi": ["Tỵ", "Mùi", "Dậu", "Ngọ", "Thìn", "Dần"], "note": "", "direction": "Tây", "mountain": "Canh", "deg_start": 253.125, "deg_end": 258.75, "deg_range": "253.125° – 258.75°"}, {"stt": 23, "name": "Hoả Sơn Lữ", "upper": "☲", "lower": "☶", "element": 3, "period": 8, "the": 1, "ung": 4, "lucThan": ["Huynh Đệ", "Tử Tôn", "Thê Tài", "Thê Tài", "Huynh Đệ", "Tử Tôn"], "diaChi": ["Tỵ", "Mùi", "Dậu", "Thân", "Ngọ", "Thìn"], "note": "", "direction": "Tây Bắc", "mountain": "Tuất", "deg_start": 298.125, "deg_end": 303.75, "deg_range": "298.125° – 303.75°"}, {"stt": 24, "name": "Hoả Địa Tấn", "upper": "☲", "lower": "☷", "element": 3, "period": 3, "the": 4, "ung": 1, "lucThan": ["Quan Quỷ", "Phụ Mẫu", "Huynh Đệ", "Thê Tài", "Quan Quỷ", "Phụ Mẫu"], "diaChi": ["Tỵ", "Mùi", "Dậu", "Mão", "Tỵ", "Mùi"], "note": "", "direction": "Bắc", "mountain": "Nhâm", "deg_start": 343.125, "deg_end": 348.75, "deg_range": "343.125° – 348.75°"}, {"stt": 25, "name": "Lôi Thiên Đại Tráng", "upper": "☳", "lower": "☰", "element": 8, "period": 2, "the": 4, "ung": 1, "lucThan": ["Huynh Đệ", "Tử Tôn", "Phụ Mẫu", "Huynh Đệ", "Quan Quỷ", "Thê Tài"], "diaChi": ["Tuất", "Thân", "Ngọ", "Thìn", "Dần", "Tý"], "note": "", "direction": "Nam", "mountain": "Bính", "deg_start": 157.5, "deg_end": 163.125, "deg_range": "157.5° – 163.125°"}, {"stt": 26, "name": "Lôi Trạch Quy Muội", "upper": "☳", "lower": "☱", "element": 8, "period": 7, "the": 3, "ung": 6, "lucThan": ["Phụ Mẫu", "Huynh Đệ", "Quan Quỷ", "Phụ Mẫu", "Thê Tài", "Quan Quỷ"], "diaChi": ["Tuất", "Thân", "Ngọ", "Sửu ", "Mão", "Tỵ"], "note": "", "direction": "Đông Nam", "mountain": "Thìn", "deg_start": 112.5, "deg_end": 118.125, "deg_range": "112.5° – 118.125°"}, {"stt": 27, "name": "Lôi Hoả Phong", "upper": "☳", "lower": "☲", "element": 8, "period": 6, "the": 5, "ung": 2, "lucThan": ["Quan Quỷ", "Phụ Mẫu", "Thê Tài", "Huynh Đệ", "Quan Quỷ", "Tử Tôn"], "diaChi": ["Tuất", "Thân", "Ngọ", "Hợi ", "Sửu", "Mão"], "note": "", "direction": "Đông", "mountain": "Giáp", "deg_start": 67.5, "deg_end": 73.125, "deg_range": "67.5° – 73.125°"}, {"stt": 28, "name": "Chấn Vi Lôi", "upper": "☳", "lower": "☳", "element": 8, "period": 1, "the": 6, "ung": 3, "lucThan": ["Thê Tài", "Quan Quỷ", "Tử Tôn", "Thê Tài", "Huynh Đệ", "Phụ Mẫu"], "diaChi": ["Tuất", "Thân", "Ngọ", "Thìn", "Dần", "Tý"], "note": "", "direction": "Đông Bắc", "mountain": "Sửu", "deg_start": 22.5, "deg_end": 28.125, "deg_range": "22.5° – 28.125°"}, {"stt": 29, "name": "Lôi Phong Hằng", "upper": "☳", "lower": "☴", "element": 8, "period": 9, "the": 3, "ung": 6, "lucThan": ["Thê Tài", "Quan Quỷ", "Tử Tôn", "Quan Quỷ", "Phụ Mẫu", "Thê Tài"], "diaChi": ["Tuất", "Thân", "Ngọ", "Dậu", "Hợi", "Sửu"], "note": "", "direction": "Tây Nam", "mountain": "Mùi", "deg_start": 202.5, "deg_end": 208.125, "deg_range": "202.5° – 208.125°"}, {"stt": 30, "name": "Lôi Thuỷ Giải", "upper": "☳", "lower": "☵", "element": 8, "period": 4, "the": 2, "ung": 5, "lucThan": ["Thê Tài", "Quan Quỷ", "Tử Tôn", "Tử Tôn", "Thê Tài", "Huynh Đệ"], "diaChi": ["Tuất", "Thân", "Ngọ", "Ngọ", "Thìn", "Dần"], "note": "", "direction": "Tây", "mountain": "Canh", "deg_start": 247.5, "deg_end": 253.125, "deg_range": "247.5° – 253.125°"}, {"stt": 31, "name": "Lôi Sơn Tiểu Quá", "upper": "☳", "lower": "☶", "element": 8, "period": 3, "the": 4, "ung": 1, "lucThan": ["Phụ Mẫu", "Huynh Đệ", "Quan Quỷ", "Huynh Đệ", "Quan Quỷ", "Phụ Mẫu"], "diaChi": ["Tuất", "Thân", "Ngọ", "Thân", "Ngọ", "Thìn"], "note": "", "direction": "Tây Bắc", "mountain": "Tuất", "deg_start": 292.5, "deg_end": 298.125, "deg_range": "292.5° – 298.125°"}, {"stt": 32, "name": "Lôi Địa Dự", "upper": "☳", "lower": "☷", "element": 8, "period": 8, "the": 1, "ung": 4, "lucThan": ["Thê Tài", "Quan Quỷ", "Tử Tôn", "Huynh Đệ", "Tử Tôn", "Thê Tài"], "diaChi": ["Tuất", "Thân", "Ngọ", "Mão", "Tỵ", "Mùi"], "note": "", "direction": "Bắc", "mountain": "Nhâm", "deg_start": 337.5, "deg_end": 343.125, "deg_range": "337.5° – 343.125°"}, {"stt": 33, "name": "Phong Thiên Tiểu Súc", "upper": "☴", "lower": "☰", "element": 2, "period": 8, "the": 4, "ung": 1, "lucThan": ["Thê Tài", "Quan Quỷ", "Phụ Mẫu", "Thê Tài", "Quan Quỷ", "Phụ Mẫu"], "diaChi": ["Mão", "Tỵ", "Mùi", "Thìn", "Dần", "Tý"], "note": "", "direction": "Đông Nam", "mountain": "Tỵ", "deg_start": 151.875, "deg_end": 157.5, "deg_range": "151.875° – 157.5°"}, {"stt": 34, "name": "Phong Trạch Trung Phu", "upper": "☴", "lower": "☱", "element": 2, "period": 3, "the": 4, "ung": 1, "lucThan": ["Quan Quỷ", "Phụ Mẫu", "Huynh Đệ", "Huynh Đệ", "Quan Quỷ", "Phụ Mẫu"], "diaChi": ["Mão", "Tỵ", "Mùi", "Sửu ", "Mão", "Tỵ"], "note": "", "direction": "Đông", "mountain": "Ất", "deg_start": 106.875, "deg_end": 112.5, "deg_range": "106.875° – 112.5°"}, {"stt": 35, "name": "Phong Hoả Gia Nhân", "upper": "☴", "lower": "☲", "element": 2, "period": 4, "the": 2, "ung": 5, "lucThan": ["Huynh Đệ", "Tử Tôn", "Thê Tài", "Phụ Mẫu", "Thê Tài", "Huynh Đệ"], "diaChi": ["Mão", "Tỵ", "Mùi", "Hợi ", "Sửu", "Mão"], "note": "", "direction": "Đông Bắc", "mountain": "Dần", "deg_start": 61.875, "deg_end": 67.5, "deg_range": "61.875° – 67.5°"}, {"stt": 36, "name": "Phong Lôi Ích", "upper": "☴", "lower": "☳", "element": 2, "period": 9, "the": 3, "ung": 6, "lucThan": ["Huynh Đệ", "Tử Tôn", "Thê Tài", "Thê Tài", "Huynh Đệ", "Phụ Mẫu"], "diaChi": ["Mão", "Tỵ", "Mùi", "Thìn", "Dần", "Tý"], "note": "", "direction": "Bắc", "mountain": "Quý", "deg_start": 16.875, "deg_end": 22.5, "deg_range": "16.875° – 22.5°"}, {"stt": 37, "name": "Lôi Vi Phong", "upper": "☴", "lower": "☴", "element": 2, "period": 1, "the": 6, "ung": 3, "lucThan": ["Huynh Đệ", "Tử Tôn", "Thê Tài", "Quan Quỷ", "Phụ Mẫu", "Thê Tài"], "diaChi": ["Mão", "Tỵ", "Mùi", "Dậu", "Hợi", "Sửu"], "note": "", "direction": "Nam", "mountain": "Đinh", "deg_start": 196.875, "deg_end": 202.5, "deg_range": "196.875° – 202.5°"}, {"stt": 38, "name": "Phong Thuỷ Hoán", "upper": "☴", "lower": "☵", "element": 2, "period": 6, "the": 5, "ung": 2, "lucThan": ["Phụ Mẫu", "Huynh Đệ", "Tử Tôn", "Huynh Đệ", "Tử Tôn", "Phụ Mẫu"], "diaChi": ["Mão", "Tỵ", "Mùi", "Ngọ", "Thìn", "Dần"], "note": "", "direction": "Tây Nam", "mountain": "Thân", "deg_start": 241.875, "deg_end": 247.5, "deg_range": "241.875° – 247.5°"}, {"stt": 39, "name": "Phong Sơn Tiệm", "upper": "☴", "lower": "☶", "element": 2, "period": 7, "the": 3, "ung": 6, "lucThan": ["Quan Quỷ", "Phụ Mẫu", "Huynh Đệ", "Tử Tôn", "Phụ Mẫu", "Huynh Đệ"], "diaChi": ["Mão", "Tỵ", "Mùi", "Thân", "Ngọ", "Thìn"], "note": "", "direction": "Tây", "mountain": "Tân", "deg_start": 286.875, "deg_end": 292.5, "deg_range": "286.875° – 292.5°"}, {"stt": 40, "name": "Phong Địa Quan", "upper": "☴", "lower": "☷", "element": 2, "period": 2, "the": 4, "ung": 1, "lucThan": ["Thê Tài", "Quan Quỷ", "Phụ Mẫu", "Thê Tài", "Quan Quỷ", "Phụ Mẫu"], "diaChi": ["Mão", "Tỵ", "Mùi", "Mão", "Tỵ", "Mùi"], "note": "", "direction": "Tây Bắc", "mountain": "Hợi", "deg_start": 331.875, "deg_end": 337.5, "deg_range": "331.875° – 337.5°"}, {"stt": 41, "name": "Thuỷ Thiên Nhu", "upper": "☵", "lower": "☰", "element": 7, "period": 3, "the": 4, "ung": 1, "lucThan": ["Thê Tài", "Huynh Đệ", "Tử Tôn", "Huynh Đệ", "Quan Quỷ", "Thê Tài"], "diaChi": ["Tý", "Tuất", "Thân", "Thìn", "Dần", "Tý"], "note": "", "direction": "Đông Nam", "mountain": "Tỵ", "deg_start": 146.25, "deg_end": 151.875, "deg_range": "146.25° – 151.875°"}, {"stt": 42, "name": "Thuỷ Trạch Lý", "upper": "☵", "lower": "☱", "element": 7, "period": 8, "the": 1, "ung": 4, "lucThan": ["Huynh Đệ", "Quan Quỷ", "Phụ Mẫu", "Quan Quỷ", "Tử Tôn", "Thê Tài"], "diaChi": ["Tý", "Tuất", "Thân", "Sửu ", "Mão", "Tỵ"], "note": "", "direction": "Đông", "mountain": "Ất", "deg_start": 101.25, "deg_end": 106.875, "deg_range": "101.25° – 106.875°"}, {"stt": 43, "name": "Thuỷ Hoả Ký Tế", "upper": "☵", "lower": "☲", "element": 7, "period": 9, "the": 3, "ung": 6, "lucThan": ["Huynh Đệ", "Quan Quỷ", "Phụ Mẫu", "Huynh Đệ", "Quan Quỷ", "Tử Tôn"], "diaChi": ["Tý", "Tuất", "Thân", "Hợi ", "Sửu", "Mão"], "note": "", "direction": "Đông Bắc", "mountain": "Dần", "deg_start": 56.25, "deg_end": 61.875, "deg_range": "56.25° – 61.875°"}, {"stt": 44, "name": "Thuỷ Lôi Truân", "upper": "☵", "lower": "☳", "element": 7, "period": 4, "the": 2, "ung": 5, "lucThan": ["Huynh Đệ", "Quan Quỷ", "Phụ Mẫu", "Quan Quỷ", "Tử Tôn", "Huynh Đệ"], "diaChi": ["Tý", "Tuất", "Thân", "Thìn", "Dần", "Tý"], "note": "", "direction": "Bắc", "mountain": "Quý", "deg_start": 11.25, "deg_end": 16.875, "deg_range": "11.25° – 16.875°"}, {"stt": 45, "name": "Thuỷ Phong Tĩnh", "upper": "☵", "lower": "☴", "element": 7, "period": 6, "the": 5, "ung": 2, "lucThan": ["Phụ Mẫu", "Thê Tài", "Quan Quỷ", "Quan Quỷ", "Phụ Mẫu", "Thê Tài"], "diaChi": ["Tý", "Tuất", "Thân", "Dậu", "Hợi", "Sửu"], "note": "", "direction": "Nam", "mountain": "Đinh", "deg_start": 191.25, "deg_end": 196.875, "deg_range": "191.25° – 196.875°"}, {"stt": 46, "name": "Khảm Vi Thuỷ", "upper": "☵", "lower": "☵", "element": 7, "period": 1, "the": 6, "ung": 3, "lucThan": ["Huynh Đệ", "Quan Quỷ", "Phụ Mẫu", "Thê Tài", "Quan Quỷ", "Tử Tôn"], "diaChi": ["Tý", "Tuất", "Thân", "Ngọ", "Thìn", "Dần"], "note": "", "direction": "Tây Nam", "mountain": "Thân", "deg_start": 236.25, "deg_end": 241.875, "deg_range": "236.25° – 241.875°"}, {"stt": 47, "name": "Thuỷ Sơn Kiển", "upper": "☵", "lower": "☶", "element": 7, "period": 2, "the": 4, "ung": 1, "lucThan": ["Tử Tôn", "Phụ Mẫu", "Huynh Đệ", "Huynh Đệ", "Quan Quỷ", "Phụ Mẫu"], "diaChi": ["Tý", "Tuất", "Thân", "Thân", "Ngọ", "Thìn"], "note": "", "direction": "Tây", "mountain": "Tân", "deg_start": 281.25, "deg_end": 286.875, "deg_range": "281.25° – 286.875°"}, {"stt": 48, "name": "Thuỷ Địa Tỷ", "upper": "☵", "lower": "☷", "element": 7, "period": 7, "the": 3, "ung": 6, "lucThan": ["Thê Tài", "Huynh Đệ", "Tử Tôn", "Quan Quỷ", "Phụ Mẫu", "Huynh Đệ"], "diaChi": ["Tý", "Tuất", "Thân", "Mão", "Tỵ", "Mùi"], "note": "", "direction": "Tây Bắc", "mountain": "Hợi", "deg_start": 326.25, "deg_end": 331.875, "deg_range": "326.25° – 331.875°"}, {"stt": 49, "name": "Sơn Thiên Đại Súc", "upper": "☶", "lower": "☰", "element": 6, "period": 4, "the": 2, "ung": 5, "lucThan": ["Quan Quỷ", "Thê Tài", "Huynh Đệ", "Huynh Đệ", "Quan Quỷ", "Thê Tài"], "diaChi": ["Dần", "Tý", "Tuất", "Thìn", "Dần", "Tý"], "note": "", "direction": "Đông Nam", "mountain": "Tốn / Tỵ", "deg_start": 140.625, "deg_end": 146.25, "deg_range": "140.625° – 146.25°"}, {"stt": 50, "name": "Sơn Trạch Tổn", "upper": "☶", "lower": "☱", "element": 6, "period": 9, "the": 3, "ung": 6, "lucThan": ["Quan Quỷ", "Thê Tài", "Huynh Đệ", "Huynh Đệ", "Quan Quỷ", "Phụ Mẫu"], "diaChi": ["Dần", "Tý", "Tuất", "Sửu ", "Mão", "Tỵ"], "note": "", "direction": "Đông", "mountain": "Mão / Ất", "deg_start": 95.625, "deg_end": 101.25, "deg_range": "95.625° – 101.25°"}, {"stt": 51, "name": "Sơn Hoả Bí", "upper": "☶", "lower": "☲", "element": 6, "period": 8, "the": 1, "ung": 4, "lucThan": ["Quan Quỷ", "Thê Tài", "Huynh Đệ", "Thê Tài", "Huynh Đệ", "Quan Quỷ"], "diaChi": ["Dần", "Tý", "Tuất", "Hợi ", "Sửu", "Mão"], "note": "", "direction": "Đông Bắc", "mountain": "Cấn / Dần", "deg_start": 50.625, "deg_end": 56.25, "deg_range": "50.625° – 56.25°"}, {"stt": 52, "name": "Sơn Lôi Di", "upper": "☶", "lower": "☳", "element": 6, "period": 3, "the": 4, "ung": 1, "lucThan": ["Huynh Đệ", "Phụ Mẫu", "Thê Tài", "Thê Tài", "Huynh Đệ", "Phụ Mẫu"], "diaChi": ["Dần", "Tý", "Tuất", "Thìn", "Dần", "Tý"], "note": "", "direction": "Bắc", "mountain": "Tý / Quý", "deg_start": 5.625, "deg_end": 11.25, "deg_range": "5.625° – 11.25°"}, {"stt": 53, "name": "Sơn Phong Cổ", "upper": "☶", "lower": "☴", "element": 6, "period": 7, "the": 3, "ung": 6, "lucThan": ["Huynh Đệ", "Phụ Mẫu", "Thê Tài", "Quan Quỷ", "Phụ Mẫu", "Thê Tài"], "diaChi": ["Dần", "Tý", "Tuất", "Dậu", "Hợi", "Sửu"], "note": "", "direction": "Nam", "mountain": "Ngọ / Đinh", "deg_start": 185.625, "deg_end": 191.25, "deg_range": "185.625° – 191.25°"}, {"stt": 54, "name": "Sơn Thuỷ Mông", "upper": "☶", "lower": "☵", "element": 6, "period": 2, "the": 4, "ung": 1, "lucThan": ["Phụ Mẫu", "Quan Quỷ", "Tử Tôn", "Huynh Đệ", "Tử Tôn", "Phụ Mẫu"], "diaChi": ["Dần", "Tý", "Tuất", "Ngọ", "Thìn", "Dần"], "note": "", "direction": "Tây Nam", "mountain": "Khôn / Thân", "deg_start": 230.625, "deg_end": 236.25, "deg_range": "230.625° – 236.25°"}, {"stt": 55, "name": "Cấn Vi Sơn", "upper": "☶", "lower": "☶", "element": 6, "period": 1, "the": 6, "ung": 3, "lucThan": ["Quan Quỷ", "Thê Tài", "Huynh Đệ", "Tử Tôn", "Phụ Mẫu", "Huynh Đệ"], "diaChi": ["Dần", "Tý", "Tuất", "Thân", "Ngọ", "Thìn"], "note": "", "direction": "Tây", "mountain": "Dậu / Tân", "deg_start": 275.625, "deg_end": 281.25, "deg_range": "275.625° – 281.25°"}, {"stt": 56, "name": "Sơn Địa Bác", "upper": "☶", "lower": "☷", "element": 6, "period": 6, "the": 5, "ung": 2, "lucThan": ["Thê Tài", "Tử Tôn", "Phụ Mẫu", "Thê Tài", "Quan Quỷ", "Phụ Mẫu"], "diaChi": ["Dần", "Tý", "Tuất", "Mão", "Tỵ", "Mùi"], "note": "", "direction": "Tây Bắc", "mountain": "Càn / Hợi", "deg_start": 320.625, "deg_end": 326.25, "deg_range": "320.625° – 326.25°"}, {"stt": 57, "name": "Địa Thiên Thái", "upper": "☷", "lower": "☰", "element": 1, "period": 9, "the": 3, "ung": 6, "lucThan": ["Tử Tôn", "Thê Tài", "Huynh Đệ", "Huynh Đệ", "Quan Quỷ", "Thê Tài"], "diaChi": ["Dậu", "Hợi", "Sửu", "Thìn", "Dần", "Tý"], "note": "", "direction": "Đông Nam", "mountain": "Tốn", "deg_start": 135.0, "deg_end": 140.625, "deg_range": "135° – 140.625°"}, {"stt": 58, "name": "Địa Trạch Lâm", "upper": "☷", "lower": "☱", "element": 1, "period": 4, "the": 2, "ung": 5, "lucThan": ["Tử Tôn", "Thê Tài", "Huynh Đệ", "Huynh Đệ", "Quan Quỷ", "Phụ Mẫu"], "diaChi": ["Dậu", "Hợi", "Sửu", "Sửu ", "Mão", "Tỵ"], "note": "", "direction": "Đông", "mountain": "Mão", "deg_start": 90.0, "deg_end": 95.625, "deg_range": "90° – 95.625°"}, {"stt": 59, "name": "Địa Hoả Minh Di", "upper": "☷", "lower": "☲", "element": 1, "period": 3, "the": 4, "ung": 1, "lucThan": ["Phụ Mẫu", "Huynh Đệ", "Quan Quỷ", "Huynh Đệ", "Quan Quỷ", "Tử Tôn"], "diaChi": ["Dậu", "Hợi", "Sửu", "Hợi ", "Sửu", "Mão"], "note": "", "direction": "Đông Bắc", "mountain": "Cấn", "deg_start": 45.0, "deg_end": 50.625, "deg_range": "45° – 50.625°"}, {"stt": 60, "name": "Địa Lôi Phục", "upper": "☷", "lower": "☳", "element": 1, "period": 8, "the": 1, "ung": 4, "lucThan": ["Tử Tôn", "Thê Tài", "Huynh Đệ", "Huynh Đệ", "Quan Quỷ", "Thê Tài"], "diaChi": ["Dậu", "Hợi", "Sửu", "Thìn", "Dần", "Tý"], "note": "", "direction": "Bắc", "mountain": "Tý", "deg_start": 0.0, "deg_end": 5.625, "deg_range": "0° – 5.625°"}, {"stt": 61, "name": "Địa Phong Thăng", "upper": "☷", "lower": "☴", "element": 1, "period": 2, "the": 4, "ung": 1, "lucThan": ["Quan Quỷ", "Phụ Mẫu", "Thê Tài", "Quan Quỷ", "Phụ Mẫu", "Thê Tài"], "diaChi": ["Dậu", "Hợi", "Sửu", "Dậu", "Hợi", "Sửu"], "note": "", "direction": "Nam", "mountain": "Ngọ", "deg_start": 180.0, "deg_end": 185.625, "deg_range": "180° – 185.625°"}, {"stt": 62, "name": "Địa Thuỷ Sư", "upper": "☷", "lower": "☵", "element": 1, "period": 7, "the": 3, "ung": 6, "lucThan": ["Phụ Mẫu", "Huynh Đệ", "Quan Quỷ", "Thê Tài", "Quan Quỷ", "Tử Tôn"], "diaChi": ["Dậu", "Hợi", "Sửu", "Ngọ", "Thìn", "Dần"], "note": "", "direction": "Tây Nam", "mountain": "Khôn", "deg_start": 225.0, "deg_end": 230.625, "deg_range": "225° – 230.625°"}, {"stt": 63, "name": "Địa Sơn Khiêm", "upper": "☷", "lower": "☶", "element": 1, "period": 6, "the": 5, "ung": 2, "lucThan": ["Huynh Đệ", "Tử Tôn", "Phụ Mẫu", "Huynh Đệ", "Quan Quỷ", "Phụ Mẫu"], "diaChi": ["Dậu", "Hợi", "Sửu", "Thân", "Ngọ", "Thìn"], "note": "", "direction": "Tây", "mountain": "Dậu", "deg_start": 270.0, "deg_end": 275.625, "deg_range": "270° – 275.625°"}, {"stt": 64, "name": "Khôn Vi Địa", "upper": "☷", "lower": "☷", "element": 1, "period": 1, "the": 6, "ung": 3, "lucThan": ["Tử Tôn", "Thê Tài", "Huynh Đệ", "Quan Quỷ", "Phụ Mẫu", "Huynh Đệ"], "diaChi": ["Dậu", "Hợi", "Sửu", "Mão", "Tỵ", "Mùi"], "note": "", "direction": "Tây Bắc", "mountain": "Càn", "deg_start": 315.0, "deg_end": 320.625, "deg_range": "315° – 320.625°"}];
+
+const TRIGRAM_BITS = {"☰":"111","☱":"011","☲":"101","☳":"001","☴":"110","☵":"010","☶":"100","☷":"000"};
+const TRIGRAM_NAME = {"☰":"Càn","☱":"Đoài","☲":"Ly","☳":"Chấn","☴":"Tốn","☵":"Khảm","☶":"Cấn","☷":"Khôn"};
+const $ = id => document.getElementById(id);
+let activeStt = null;
+
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c]));
+}
+function uniq(field) {
+  return [...new Set(DATA.map(x=>String(x[field]??"")).filter(Boolean))];
+}
+function fillSelect(id, values, labeler=(v)=>v) {
+  const s=$(id);
+  values.forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=labeler(v);s.appendChild(o);});
+}
+fillSelect("direction", ["Bắc","Đông Bắc","Đông","Đông Nam","Nam","Tây Nam","Tây","Tây Bắc"]);
+fillSelect("mountain", ["Nhâm","Tý","Quý","Sửu","Cấn","Dần","Giáp","Mão","Ất","Thìn","Tốn","Tỵ","Bính","Ngọ","Đinh","Mùi","Khôn","Thân","Canh","Dậu","Tân","Tuất","Càn","Hợi"]);
+fillSelect("upper", uniq("upper"), v=>`${v} ${TRIGRAM_NAME[v]||""}`);
+fillSelect("lower", uniq("lower"), v=>`${v} ${TRIGRAM_NAME[v]||""}`);
+fillSelect("element", uniq("element").sort((a,b)=>Number(a)-Number(b)));
+fillSelect("period", uniq("period").sort((a,b)=>Number(a)-Number(b)));
+
+function degreeMatch(x) {
+  const raw = $("degree").value.trim().replace(",", ".");
+  if(!raw) return true;
+  let d = Number(raw);
+  if(Number.isNaN(d)) return false;
+  d = ((d % 360) + 360) % 360;
+  return d >= Number(x.deg_start) - 1e-9 && d <= Number(x.deg_end) + 1e-9;
+}
+
+function filtered() {
+  const q=$("q").value.trim().toLowerCase();
+  const m=$("mountain").value;
+  return DATA.filter(x =>
+    (!q || String(x.name).toLowerCase().includes(q)) &&
+    (!$("direction").value || x.direction === $("direction").value) &&
+    (!m || String(x.mountain).split(" / ").includes(m)) &&
+    degreeMatch(x) &&
+    (!$("upper").value || x.upper === $("upper").value) &&
+    (!$("lower").value || x.lower === $("lower").value) &&
+    (!$("element").value || String(x.element) === $("element").value) &&
+    (!$("period").value || String(x.period) === $("period").value)
+  );
+}
+
+function renderTable() {
+  const rows=filtered();
+  $("tbody").innerHTML = rows.map(x=>`
+    <tr data-stt="${x.stt}" class="${activeStt===x.stt?'active':''}">
+      <td>${esc(x.stt)}</td>
+      <td class="name">${esc(x.name)}</td>
+      <td class="symbol" title="${TRIGRAM_NAME[x.upper]||''}">${esc(x.upper)}</td>
+      <td class="symbol" title="${TRIGRAM_NAME[x.lower]||''}">${esc(x.lower)}</td>
+      <td><span class="badge dir">${esc(x.direction)}</span></td>
+      <td><span class="badge mtn">${esc(x.mountain)}</span></td>
+      <td><strong>${esc(x.deg_range)}</strong></td>
+      <td><span class="badge element">${esc(x.element)}</span></td>
+      <td><span class="badge period">${esc(x.period)}</span></td>
+      <td><span class="pos">${esc(x.the)}</span></td>
+      <td><span class="pos">${esc(x.ung)}</span></td>
+      ${x.lucThan.map(v=>`<td>${esc(v)}</td>`).join("")}
+      ${x.diaChi.map(v=>`<td>${esc(v)}</td>`).join("")}
+      <td class="note">${esc(x.note)}</td>
+    </tr>`).join("");
+  $("count").textContent=`Hiển thị ${rows.length} / ${DATA.length} quẻ`;
+  document.querySelectorAll("#tbody tr").forEach(tr=>tr.addEventListener("click",()=>{
+    const stt=Number(tr.dataset.stt); activeStt=stt;
+    renderDetail(DATA.find(d=>Number(d.stt)===stt)); renderTable();
+  }));
+}
+
+function lineHtml(bit, role) {
+  const bar = bit==="1"
+    ? `<div class="line-solid"></div>`
+    : `<div class="line-broken"><span></span><span></span></div>`;
+  return `<div class="line-wrap">${bar}${role?`<span class="role">${role}</span>`:""}</div>`;
+}
+
+function renderDetail(x) {
+  if(!x) return;
+  const bits=(TRIGRAM_BITS[x.upper]||"")+(TRIGRAM_BITS[x.lower]||"");
+  const haoNos=[6,5,4,3,2,1];
+  const rows=haoNos.map((hao,idx)=>{
+    let role="";
+    if(Number(x.the)===hao) role="Thế";
+    if(Number(x.ung)===hao) role=role?role+" / Ứng":"Ứng";
+    return `<div class="hex-row">
+      <div class="relation">${esc(x.lucThan[idx])}</div>
+      ${lineHtml(bits[idx],role)}
+      <div class="branch">${esc(x.diaChi[idx])}</div>
+    </div>`;
+  }).join("");
+
+  $("detail").innerHTML=`
+    <div class="detail-kicker">Chi tiết quẻ</div>
+    <div class="detail-title">${esc(x.name)}</div>
+    <div class="detail-sub">Quẻ số ${esc(x.stt)} trong bộ dữ liệu 64 quẻ</div>
+
+    <div class="location-card">
+      <div><div class="location-label">Phương Vị</div><div class="location-value">${esc(x.direction)}</div></div>
+      <div><div class="location-label">Sơn</div><div class="location-value">${esc(x.mountain)}</div></div>
+      <div class="wide"><div class="location-label">Khoảng Độ</div><div class="location-value">${esc(x.deg_range)}</div></div>
+    </div>
+
+    <div class="trigrams">
+      <div class="trigram-box"><div class="trigram-symbol">${esc(x.upper)}</div><div class="trigram-label">Thượng Quái · ${esc(TRIGRAM_NAME[x.upper]||"")}</div></div>
+      <div class="trigram-box"><div class="trigram-symbol">${esc(x.lower)}</div><div class="trigram-label">Hạ Quái · ${esc(TRIGRAM_NAME[x.lower]||"")}</div></div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><div class="label">HKNH</div><div class="value">${esc(x.element)}</div></div>
+      <div class="metric"><div class="label">Quái Vận</div><div class="value">${esc(x.period)}</div></div>
+      <div class="metric"><div class="label">Thế</div><div class="value">${esc(x.the)}</div></div>
+      <div class="metric"><div class="label">Ứng</div><div class="value">${esc(x.ung)}</div></div>
+    </div>
+
+    <div class="hexagram">
+      <div style="display:grid;grid-template-columns:86px 1fr 84px;gap:10px;margin-bottom:6px;font-size:12px;color:var(--muted);font-weight:700">
+        <div style="text-align:right">Lục Thân</div><div style="text-align:center">6 hào · từ trên xuống dưới</div><div>Địa Chi</div>
+      </div>
+      ${rows}
+    </div>
+    ${x.note?`<div style="margin-top:16px;padding:12px;border-radius:10px;background:#fff7f8;color:#6b2738"><strong>Ghi chú:</strong> ${esc(x.note)}</div>`:""}
+  `;
+}
+
+["q","degree"].forEach(id=>$(id).addEventListener("input",renderTable));
+["direction","mountain","upper","lower","element","period"].forEach(id=>$(id).addEventListener("change",renderTable));
+
+renderTable();
+if(DATA.length){activeStt=DATA[0].stt;renderDetail(DATA[0]);renderTable();}
+</script>
+</body>
+</html>
